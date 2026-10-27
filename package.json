@@ -1,0 +1,38 @@
+{
+  "name": "toolhub-mongodb",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:qa": "vitest run src/qa/tools.qa.test.tsx --reporter=verbose",
+    "test:qa:live": "vitest run src/qa/currency.live.test.ts --reporter=verbose",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@types/qrcode": "^1.5.6",
+    "dotenv": "17.3.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.55.0",
+    "mongodb": "^7.7.0",
+    "next": "16.2.6",
+    "qrcode": "^1.5.4",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "vitest": "^5.0.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/postcss": "4.1.17",
+    "@types/node": "22.19.15",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "postcss": "8.5.8",
+    "tailwindcss": "4.1.17",
+    "typescript": "5.9.3"
+  }
+}
