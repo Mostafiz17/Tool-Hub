@@ -11,6 +11,7 @@ import { Base64Tool, ColorConverterTool, JsonTool, PasswordGeneratorTool, Passwo
 import { ColorPickerTool, FontPairingTool, PaletteTool } from "./tools-design";
 import { ImageCompressorTool, ImageConverterTool, ImageResizerTool, ImagesToPdfTool, WatermarkRemoverTool } from "./tools-image";
 import { CurrencyTool, EmiTool, QrTool, TipTool } from "./tools-finance";
+import { EXPANDED_TOOL_COMPONENTS } from "./tools-expanded";
 
 export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   "calculator": CalculatorTool, "percentage-calculator": PercentageTool, "unit-converter": UnitConverterTool,
@@ -24,6 +25,7 @@ export const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   "image-compressor": ImageCompressorTool, "image-resizer": ImageResizerTool, "image-converter": ImageConverterTool, "images-to-pdf": ImagesToPdfTool,
   "watermark-remover": WatermarkRemoverTool,
   "tip-calculator": TipTool, "emi-calculator": EmiTool, "currency-converter": CurrencyTool, "qr-generator": QrTool,
+  ...EXPANDED_TOOL_COMPONENTS,
 };
 
 export function ToolPage({ tool }: { tool: ToolDef }) {
@@ -40,9 +42,9 @@ export function ToolPage({ tool }: { tool: ToolDef }) {
     : related;
 
   return (
-    <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8 w-full space-y-8">
+    <main className="page-shell tool-page mx-auto max-w-6xl px-4 sm:px-6 py-8 w-full space-y-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-xs font-semibold muted">
+      <nav aria-label="Breadcrumb" className="breadcrumb flex flex-wrap items-center gap-1.5 text-xs font-semibold muted">
         <Link href="/" className="hover:text-[var(--primary)] transition-colors">Home</Link><ChevronRight size={13} />
         <Link href="/tools" className="hover:text-[var(--primary)] transition-colors">Tools</Link><ChevronRight size={13} />
         <Link href={`/categories/${tool.category}`} className="hover:text-[var(--primary)] transition-colors">{cat?.name}</Link><ChevronRight size={13} />
@@ -50,7 +52,7 @@ export function ToolPage({ tool }: { tool: ToolDef }) {
       </nav>
 
       {/* Tool header: identity, context, and the one non-tool action (favorite) */}
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 pb-6 border-b" style={{ borderColor: "var(--border)" }}>
+      <div className="tool-page-header flex flex-col md:flex-row md:items-start justify-between gap-5 pb-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="flex items-start gap-4 sm:gap-5 min-w-0">
           <span className="hidden sm:grid place-items-center w-14 h-14 rounded-2xl shrink-0" style={{ background: "var(--primary-soft)", color: "var(--primary)" }}>
             <ToolIcon name={tool.icon} size={26} />
@@ -75,7 +77,7 @@ export function ToolPage({ tool }: { tool: ToolDef }) {
       </div>
 
       {/* Primary workspace — the tool itself is the focus */}
-      <section className="card p-5 sm:p-7" aria-label={`${tool.name} workspace`}>
+      <section className="card tool-workspace p-5 sm:p-7" aria-label={`${tool.name} workspace`}>
         {Cmp ? <Cmp /> : <p className="muted">This tool is not available.</p>}
       </section>
 

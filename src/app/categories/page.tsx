@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function CategoriesPage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
-      <div>
+    <main className="page-shell categories-page mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
+      <div className="page-intro">
         <p className="eyebrow-label"><FolderTree size={14} /><span>Tool domains</span></p>
         <h1 className="section-title">Browse by Category</h1>
         <p className="muted-13 mt-1.5 max-w-2xl leading-relaxed">
@@ -24,7 +24,7 @@ export default function CategoriesPage() {
         {CATEGORIES.map((c) => {
           const tools = toolsByCategory(c.slug);
           return (
-            <Link key={c.slug} href={`/categories/${c.slug}`} className="card card-hover p-6 block group">
+            <Link key={c.slug} href={`/categories/${c.slug}`} className="card category-card card-hover p-6 block group">
               <div className="flex items-start justify-between mb-4">
                 <span className="grid place-items-center w-12 h-12 rounded-2xl" style={{ background: "var(--primary-soft)", color: "var(--primary)" }}>
                   <ToolIcon name={c.icon} size={22} />

@@ -4,11 +4,12 @@ export default defineConfig({
   testDir: "./tests/e2e",
   outputDir: "./test-results/playwright",
   fullyParallel: false,
+  workers: 1,
   timeout: 30_000,
   expect: { timeout: 10_000 },
   reporter: [["list"], ["html", { outputFolder: "playwright-report", open: "never" }]],
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

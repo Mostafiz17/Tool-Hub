@@ -96,15 +96,15 @@ describe("local image healing", () => {
   });
 });
 describe("registry", () => {
-  it("has 31 published unique tools", () => {
-    expect(publishedTools).toHaveLength(31);
-    expect(new Set(TOOLS.map((t) => t.slug)).size).toBe(31);
-    expect(new Set(TOOLS.map((t) => t.id)).size).toBe(31);
+  it("has 121 published unique tools", () => {
+    expect(publishedTools).toHaveLength(121);
+    expect(new Set(TOOLS.map((t) => t.slug)).size).toBe(121);
+    expect(new Set(TOOLS.map((t) => t.id)).size).toBe(121);
   });
   it("search + category filtering", () => {
     expect(searchTools("json").map((t) => t.slug)).toContain("json-formatter");
     expect(searchTools("watermark").map((t) => t.slug)).toContain("watermark-remover");
     expect(searchTools("zzz-no-match-zzz")).toHaveLength(0);
-    expect(publishedTools.filter((t) => t.category === "image")).toHaveLength(5);
+    expect(publishedTools.filter((t) => t.category === "image")).toHaveLength(10);
   });
 });

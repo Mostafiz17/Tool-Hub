@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import * as icons from "lucide-react";
 import { CATEGORIES, publishedTools, searchTools, type ToolDef } from "@/lib/registry";
 import { useStore } from "@/lib/store";
@@ -239,8 +239,8 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b glass-panel" style={{ borderColor: "var(--border)" }}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-between gap-4 h-16">
+    <header className="site-header sticky top-0 z-50 border-b glass-panel" style={{ borderColor: "var(--border)" }}>
+      <div className="site-header-inner mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-between gap-4 h-16">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg tracking-tight shrink-0 group" aria-label="ToolHub home">
             <span className="grid place-items-center w-9 h-9 rounded-xl text-white shadow-sm" style={{ background: "var(--primary)" }}>
@@ -351,9 +351,9 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="border-t mt-24" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-14 grid gap-10 sm:grid-cols-2 md:grid-cols-4">
-        <div>
+    <footer className="site-footer border-t mt-24" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+      <div className="footer-grid mx-auto max-w-7xl px-4 sm:px-6 py-14 grid gap-10 sm:grid-cols-2 md:grid-cols-4">
+        <div className="footer-brand">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg tracking-tight" aria-label="ToolHub home">
             <span className="grid place-items-center w-8 h-8 rounded-lg text-white" style={{ background: "var(--primary)" }}>
               <icons.Wrench size={16} />
@@ -407,7 +407,7 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="border-t py-6 text-center text-xs muted px-4 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto" style={{ borderColor: "var(--border)" }}>
+      <div className="footer-bottom border-t py-6 text-center text-xs muted px-4 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto" style={{ borderColor: "var(--border)" }}>
         <p>© {new Date().getFullYear()} ToolHub. Inspired by TinyWow & 10015.io. Free and open utility platform.</p>
         <p className="mt-2 sm:mt-0 font-medium">All processing happens locally in your browser.</p>
       </div>
@@ -419,16 +419,59 @@ export function Footer() {
  * Enhanced ToolCard (inspired by 10015.io & TinyWow):
  * Compact, scannable, category pill, favorite heart, and smooth hover elevation.
  */
+const revealedToolCards = new Set<string>();
+
+function cardMotionKind(category: string) {
+  if (["calculators", "finance", "business"].includes(category)) return "calc";
+  if (["text", "ai-content"].includes(category)) return "text";
+  if (category === "seo") return "scan";
+  if (["image", "design"].includes(category)) return "image";
+  if (category === "documents") return "file";
+  return "dots";
+}
+
 export function ToolCard({ tool }: { tool: ToolDef }) {
   const { isFavorite, toggleFavorite } = useStore();
   const fav = isFavorite(tool.slug);
   const cat = CATEGORIES.find((c) => c.slug === tool.category);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(() => revealedToolCards.has(tool.slug));
+  const [animateReveal] = useState(() => !revealedToolCards.has(tool.slug));
+  const motionKind = cardMotionKind(tool.category);
+
+  useEffect(() => {
+    if (revealed || revealedToolCards.has(tool.slug)) return;
+    const node = cardRef.current;
+    if (!node || typeof IntersectionObserver === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      revealedToolCards.add(tool.slug);
+      setRevealed(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      revealedToolCards.add(tool.slug);
+      setRevealed(true);
+      observer.disconnect();
+    }, { rootMargin: "0px 0px -5%", threshold: 0.08 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [revealed, tool.slug]);
+
+  const revealDelay = `${[...tool.slug].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 5 * 35}ms`;
 
   return (
-    <div className="tool-card group">
-      <div className="flex items-start justify-between gap-2">
+    <div
+      ref={cardRef}
+      className={`tool-card tool-card-reveal group ${revealed ? (animateReveal ? "is-revealed" : "is-visible") : ""}`}
+      style={{ "--tool-reveal-delay": revealDelay } as CSSProperties}
+    >
+      <Link href={`/tools/${tool.slug}`} className="tool-card-overlay" aria-label={`Open ${tool.name}`} />
+      <div className="tool-card-top flex items-start justify-between gap-2">
         <div className="tool-card-icon">
           <ToolIcon name={tool.icon} size={20} />
+          <span className={`tool-card-activity tool-card-activity-${motionKind}`} aria-hidden="true">
+            <i /><i /><i />
+          </span>
         </div>
         <button
           onClick={(e) => {
@@ -446,11 +489,9 @@ export function ToolCard({ tool }: { tool: ToolDef }) {
       </div>
 
       <div className="flex-1">
-        <Link href={`/tools/${tool.slug}`} className="stretched font-bold hover:text-[var(--primary)] block transition-colors">
-          <h3 className="card-title leading-snug group-hover:text-[var(--primary)] transition-colors">
-            {tool.name}
-          </h3>
-        </Link>
+        <h3 className="card-title leading-snug group-hover:text-[var(--primary)] transition-colors">
+          {tool.name}
+        </h3>
         <p className="text-xs muted mt-1.5 leading-relaxed line-clamp-2">
           {tool.description}
         </p>

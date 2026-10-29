@@ -74,10 +74,10 @@ const ssr = (Component: React.ComponentType) => renderToStaticMarkup(<Component 
 const fakeFile = (type: string, size: number, name = "fixture.bin") => ({ type, size, name }) as File;
 
 describe("QA inventory and integration wiring", () => {
-  it("discovers exactly 31 published tools with unique IDs and slugs", () => {
-    expect(publishedTools).toHaveLength(31);
-    expect(new Set(TOOLS.map((tool) => tool.id)).size).toBe(31);
-    expect(new Set(TOOLS.map((tool) => tool.slug)).size).toBe(31);
+  it("discovers exactly 121 published tools with unique IDs and slugs", () => {
+    expect(publishedTools).toHaveLength(121);
+    expect(new Set(TOOLS.map((tool) => tool.id)).size).toBe(121);
+    expect(new Set(TOOLS.map((tool) => tool.slug)).size).toBe(121);
   });
 
   it("maps every published tool to an executable component and a valid category", () => {

@@ -20,7 +20,7 @@ export default function Home() {
     <main className="w-full">
       <Hero />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 space-y-14 sm:space-y-16">
+      <div className="home-sections mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16 space-y-14 sm:space-y-16">
         {/* Recently Used */}
         {recentTools.length > 0 && (
           <section aria-labelledby="recent-heading" className="space-y-6">
@@ -39,7 +39,7 @@ export default function Home() {
         )}
 
         {/* Full catalog with instant category filtering */}
-        <section aria-labelledby="catalog-heading" className="space-y-6">
+        <section aria-labelledby="catalog-heading" className="home-catalog space-y-6">
           <SectionHeader
             icon={<LayoutGrid size={14} />}
             eyebrow="Tool catalog"
@@ -121,7 +121,8 @@ export default function Home() {
             {CATEGORIES.map((cat) => {
               const tools = toolsByCategory(cat.slug);
               return (
-                <div key={cat.slug} className="card card-hover p-5 flex flex-col">
+                <div key={cat.slug} className="card card-hover dashboard-category-card p-5 flex flex-col">
+                  <Link href={`/categories/${cat.slug}`} className="card-overlay-link" aria-label={`Open ${cat.name} category`} />
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2.5">
                       <span className="grid place-items-center w-9 h-9 rounded-xl" style={{ background: "var(--primary-soft)", color: "var(--primary)" }}>

@@ -28,7 +28,7 @@ function Catalog() {
   const resetFilters = () => { setQ(""); setCat("all"); setView("all"); };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
+    <main className="page-shell catalog-page mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
       <SectionHeader
         icon={<LayoutGrid size={14} />}
         eyebrow="Complete directory"
@@ -39,7 +39,7 @@ function Catalog() {
       />
 
       {/* Filter toolbar */}
-      <div className="card p-4 sm:p-5 space-y-4" role="search" aria-label="Tool catalog filters">
+      <div className="card filter-panel p-4 sm:p-5 space-y-4" role="search" aria-label="Tool catalog filters">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
             <label htmlFor="catalog-filter" className="sr-only">Filter tools by name or keyword</label>
@@ -93,7 +93,7 @@ function Catalog() {
       </div>
 
       {/* Live results count */}
-      <p className="text-xs font-semibold muted -mt-2" aria-live="polite">
+      <p className="results-bar text-xs font-semibold muted -mt-2" aria-live="polite">
         Showing <strong style={{ color: "var(--text-primary)" }}>{results.length}</strong> of {publishedTools.length} tools
         {q.trim() && <> matching “<span style={{ color: "var(--primary)" }}>{q}</span>”</>}
         {cat !== "all" && <> in <span style={{ color: "var(--primary)" }}>{CATEGORIES.find((c) => c.slug === cat)?.name}</span></>}

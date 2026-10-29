@@ -1,3 +1,5 @@
+import { EXPANDED_CATEGORIES, EXPANDED_TOOLS } from "./expanded-registry";
+
 export type Category = { slug: string; name: string; description: string; icon: string };
 export type ToolDef = {
   id: string; name: string; slug: string; description: string; category: string;
@@ -11,6 +13,7 @@ export const CATEGORIES: Category[] = [
   { slug: "design", name: "Color & Design", description: "Pick colors, build palettes and pair fonts that actually work together.", icon: "Palette" },
   { slug: "image", name: "Image Tools", description: "Compress, resize, convert, heal small marks, and combine images — processed locally in your browser.", icon: "Image" },
   { slug: "finance", name: "Finance & Utility", description: "Tips, EMIs, live currency conversion and QR codes.", icon: "Wallet" },
+  ...EXPANDED_CATEGORIES,
 ];
 
 const t = (id: string, name: string, slug: string, description: string, category: string, icon: string, keywords: string[], opts: Partial<ToolDef> = {}): ToolDef =>
@@ -48,6 +51,7 @@ export const TOOLS: ToolDef[] = [
   t("emi-calculator", "EMI Calculator", "emi-calculator", "Monthly installment, total interest and repayment from principal, rate and tenure.", "finance", "Landmark", ["loan", "emi", "interest", "mortgage"], { popular: true }),
   t("currency-converter", "Currency Converter", "currency-converter", "Live exchange rates from a real public source, with source and update time shown.", "finance", "ArrowLeftRight", ["currency", "exchange", "usd", "eur", "fx"], { featured: true }),
   t("qr-generator", "QR Code Generator", "qr-generator", "Generate real QR codes from text or URLs and download as PNG.", "finance", "QrCode", ["qr", "code", "scan"], { popular: true }),
+  ...EXPANDED_TOOLS,
 ];
 
 export const publishedTools = TOOLS.filter((x) => x.status === "published");

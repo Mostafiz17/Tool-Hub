@@ -9,7 +9,7 @@ export default function FavoritesPage() {
   const tools = favorites.map(getTool).filter(Boolean) as NonNullable<ReturnType<typeof getTool>>[];
 
   return (
-    <main className="mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
+    <main className="page-shell favorites-page mx-auto max-w-7xl px-4 sm:px-6 py-10 w-full space-y-8">
       <SectionHeader
         icon={<Heart size={14} />}
         eyebrow="Pinned shortcuts"
