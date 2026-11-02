@@ -17,8 +17,8 @@ test.describe("ToolHub discovery and navigation", () => {
   test("filters the catalog and restores the complete result set", async ({ page }) => {
     await page.goto("/tools");
 
-    await page.getByRole("button", { name: "Text Tools" }).click();
-    await expect(page.getByText(/Showing 5 of 121 tools/)).toBeVisible();
+    await page.getByRole("button", { name: "Text & Documents" }).click();
+    await expect(page.getByText(/Showing 44 of 121 tools/)).toBeVisible();
     await expect(page.getByRole("heading", { name: "Word & Character Counter" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Basic Calculator" })).toHaveCount(0);
 
@@ -121,26 +121,26 @@ test.describe("ToolHub discovery and navigation", () => {
     await expect(page).toHaveURL(/\/tools$/);
 
     await page.goto("/");
-    const dashboardCategory = page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators & Dates" }) });
+    const dashboardCategory = page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators" }) });
     await clickSurface(dashboardCategory.getByText(/Everyday math/));
     await expect(page).toHaveURL(/\/categories\/calculators$/);
 
     await page.goto("/");
-    await page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators & Dates" }) }).getByRole("link", { name: "View all Calculators & Dates tools" }).click();
+    await page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators" }) }).getByRole("link", { name: "View all Calculators tools" }).click();
     await expect(page).toHaveURL(/\/categories\/calculators$/);
 
     await page.goto("/");
-    await page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators & Dates" }) }).getByRole("link", { name: "Basic Calculator" }).click();
+    await page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators" }) }).getByRole("link", { name: "Basic Calculator" }).click();
     await expect(page).toHaveURL(/\/tools\/calculator$/);
 
     await page.goto("/");
-    const categoryOverlay = page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators & Dates" }) }).getByRole("link", { name: "Open Calculators & Dates category" });
+    const categoryOverlay = page.locator(".dashboard-category-card").filter({ has: page.getByRole("heading", { name: "Calculators" }) }).getByRole("link", { name: "Open Calculators category" });
     await categoryOverlay.focus();
     await categoryOverlay.press("Enter");
     await expect(page).toHaveURL(/\/categories\/calculators$/);
 
     await page.goto("/categories");
-    const directoryCard = page.locator(".category-card").filter({ has: page.getByRole("heading", { name: "Calculators & Dates" }) });
+    const directoryCard = page.locator(".category-card").filter({ has: page.getByRole("heading", { name: "Calculators" }) });
     await expect(directoryCard).toBeVisible();
     await clickSurface(directoryCard.getByText(/Everyday math/));
     await expect(page).toHaveURL(/\/categories\/calculators$/);

@@ -422,11 +422,10 @@ export function Footer() {
 const revealedToolCards = new Set<string>();
 
 function cardMotionKind(category: string) {
-  if (["calculators", "finance", "business"].includes(category)) return "calc";
-  if (["text", "ai-content"].includes(category)) return "text";
-  if (category === "seo") return "scan";
-  if (["image", "design"].includes(category)) return "image";
-  if (category === "documents") return "file";
+  if (["calculators", "business"].includes(category)) return "calc";
+  if (category === "text") return "text";
+  if (category === "developer") return "scan";
+  if (category === "image") return "image";
   return "dots";
 }
 

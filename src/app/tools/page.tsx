@@ -114,7 +114,7 @@ function Catalog() {
       )}
 
       <p className="text-xs muted text-center pt-4 border-t" style={{ borderColor: "var(--border)" }}>
-        Looking for something specific? <Link href="/categories" className="font-bold hover:underline" style={{ color: "var(--primary)" }}>Browse the six tool domains</Link> or use the search bar above.
+        Looking for something specific? <Link href="/categories" className="font-bold hover:underline" style={{ color: "var(--primary)" }}>Browse the {CATEGORIES.length} tool categories</Link> or use the search bar above.
       </p>
     </main>
   );

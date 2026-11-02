@@ -1,30 +1,29 @@
-# ToolHub — 31 Free Online Tools
+# ToolHub — 121 Free Online Tools
 
 A complete, privacy-first all-in-one tools platform: calculators, text tools, developer utilities, color/design tools, image tools and finance tools in an original blue-themed, dark-mode-ready interface.
 
 > **Stack note:** This implementation runs as a full-stack Next.js (App Router) + React + TypeScript application: the "backend" is modular REST route handlers under `src/app/api/*`, and persistence uses MongoDB through the official Node.js driver. Each user document embeds favorites and preferences for atomic, user-scoped operations while preserving validated requests, hashed-password auth, and HttpOnly signed session cookies.
 
 ## Features
-- **31 real tools**, all driven by a single central registry (`src/lib/registry.ts`) — homepage, catalog, categories, search, favorites, recents and related tools all read from it.
+- **121 real tools**, all driven by a single central registry (`src/lib/registry.ts`) — homepage, catalog, categories, search, favorites, recents and related tools all read from it.
 - **Local-first processing:** calculators, text, dev, design and image tools run 100% in the browser. Files are never uploaded; passwords are never transmitted.
 - **Accounts (optional):** register/login with scrypt-hashed passwords + signed HttpOnly session cookie; favorites sync across devices. Guests use local storage. All tools work without an account.
 - **Live currency conversion** via the free keyless open.er-api.com service through a caching server proxy (`/api/currency`) — source + update time always displayed; errors shown honestly, rates never invented.
 - Light/dark/system theme (persisted, system-aware), WCAG-conscious focus states, 44px+ touch targets, semantic HTML, reduced-motion support.
 
-## The 31 tools
-| Category | Tools |
-|---|---|
-| Calculators & Dates | Basic Calculator, Percentage, Unit Converter, Age, Date Difference, Countdown |
-| Text | Word Counter, Case Converter, Lorem Ipsum, Whitespace Cleaner, Text Diff |
-| Developer | JSON Formatter, Base64, UUID Generator, URL Encoder, Regex Tester, Color Converter, Password Generator, Password Strength |
-| Color & Design | Color Picker, Palette Generator, Font Pairing |
-| Image | Compressor, Resizer, Format Converter, Watermark Remover, Images→PDF |
-| Finance & Utility | Tip Calculator, EMI Calculator, Currency Converter, QR Generator |
+## Tool categories
+| Category | Count | Primary purpose |
+|---|---:|---|
+| Calculators | 8 | General math, units, dates, time zones and countdowns |
+| Business & Finance | 30 | Money, pricing, ROI, SaaS metrics, project costs and business planning |
+| Text & Documents | 44 | Writing, cleanup, comparison, summarization, PDFs and document creation |
+| Developer & Web | 24 | Code utilities, security, QR workflows, metadata, SEO and web visibility |
+| Image & Design | 15 | Image editing and conversion, colors, palettes, typography and graphics |
 
 ## Design system & UX architecture (Inspired by TinyWow & 10015.io)
 - **Visual identity**: Restrained one-accent palette — neutral slate surfaces in light and dark themes with a single electric blue accent (`#2563EB` light / `#3B82F6` dark), selective glassmorphism (`backdrop-filter: blur(16px)`), fine borders, and refined DM Sans typography. The hero deliberately avoids extra hues: no gradients, glows, or multi-color tints — blue marks accents only, everything else is neutral ink.
 - **Fast discovery (TinyWow style)**: Prominent instant search combobox with match highlighting, live keyboard navigation, instant category tabs on the homepage with live tool count badges, and popular tool shortcuts.
-- **Structured domain grouping (10015.io style)**: Tools organized by domain (Calculators, Text, Developer, Design, Image, Finance), curated workflow speed packs (Developer Essentials, Image & Media Studio, Daily Math & Finance), and clean category directory cards.
+- **Structured domain grouping (10015.io style)**: Tools organized into five non-overlapping domains (Calculators, Business & Finance, Text & Documents, Developer & Web, Image & Design), curated workflow speed packs, and clean category directory cards.
 - **ToolCard design**: Compact, scannable cards with category badges, category-tinted icon halos, favorite pinning, and smooth hover micro-elevations.
 - **Tool workspaces**: Distraction-free utility layout with breadcrumbs, category indicator, favorite toggle, client-side privacy indicator, and related tools recommendations.
 - **Consistency system**: A shared type scale (`.eyebrow-label` → `.section-title` → `.card-title`), reusable `SectionHeader` and `EmptyState` components used on every listing page, one spacing rhythm (`space-y-14/16`, 4/5px card gaps), and identical hover/active/disabled/focus states across `.btn-primary`, `.btn-ghost`, `.chip`, `.input`, and cards.
@@ -66,11 +65,11 @@ All declared packages, exact versions, rationale and usage are documented in **[
 ## Testing & verification (actual results)
 | Check | Command | Result |
 |---|---|---|
-| Unit tests | `npx vitest run` | **26/26 passed** — calculator arithmetic, unit/temperature conversion, date & leap-year cases, text transforms/diff, JSON, Unicode Base64, UUID v4, colors, password strength, EMI/tip math, local image inpainting, 31-tool registry, search & category filtering |
+| Unit tests | `npx vitest run` | Covers calculator arithmetic, conversions, text transforms, developer utilities, the 121-tool registry, search and category filtering |
 | Lint | `npm run lint` | **0 errors** (7 warnings: pre-existing `<img>` suggestions for blob/QR previews) |
 | Type generation | `npx next typegen` | passed |
 | Type check | `npm run typecheck` | passed |
-| Production build | `npm run build` | passed — all pages + 31 tool routes generated |
+| Production build | `npm run build` | Generates all pages and 121 tool routes |
 | Runtime health | `build_and_start` → `/api/health` | `{"ok":true}` |
 
 These are the checks that were actually executed in this environment; no other result is claimed.

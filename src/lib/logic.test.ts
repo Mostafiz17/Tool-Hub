@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ageFromDob, base64DecodeUnicode, base64EncodeUnicode, convertCase, convertUnit, dateDiff, diffLines, emi, evaluateExpression, formatJson, hexToRgb, hslToRgb, palette, passwordStrength, pctChange, rgbToHex, rgbToHsl, textStats, tipCalc, uuidv4 } from "./logic";
-import { publishedTools, searchTools, TOOLS } from "./registry";
+import { CATEGORIES, publishedTools, resolveCategorySlug, searchTools, TOOLS, toolsByCategory } from "./registry";
 import { inpaintMaskedPixels } from "./inpaint";
 
 describe("calculator", () => {
@@ -105,6 +105,18 @@ describe("registry", () => {
     expect(searchTools("json").map((t) => t.slug)).toContain("json-formatter");
     expect(searchTools("watermark").map((t) => t.slug)).toContain("watermark-remover");
     expect(searchTools("zzz-no-match-zzz")).toHaveLength(0);
-    expect(publishedTools.filter((t) => t.category === "image")).toHaveLength(10);
+    expect(publishedTools.filter((t) => t.category === "image")).toHaveLength(15);
+    expect(CATEGORIES).toHaveLength(5);
+    expect(Object.fromEntries(CATEGORIES.map((category) => [category.slug, toolsByCategory(category.slug).length]))).toEqual({
+      calculators: 8,
+      business: 30,
+      text: 44,
+      developer: 24,
+      image: 15,
+    });
+    expect(resolveCategorySlug("finance")).toBe("business");
+    expect(resolveCategorySlug("documents")).toBe("text");
+    expect(searchTools("seo")).toContainEqual(expect.objectContaining({ slug: "meta-tag-generator" }));
+    expect(searchTools("finance")).toContainEqual(expect.objectContaining({ slug: "currency-converter" }));
   });
 });

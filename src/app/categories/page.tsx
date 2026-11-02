@@ -6,7 +6,7 @@ import { ToolIcon } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Tool Categories",
-  description: `Browse ${publishedTools.length} online tools organized into six specialized categories.`,
+  description: `Browse ${publishedTools.length} online tools organized into ${CATEGORIES.length} clear categories.`,
 };
 
 export default function CategoriesPage() {
@@ -16,7 +16,7 @@ export default function CategoriesPage() {
         <p className="eyebrow-label"><FolderTree size={14} /><span>Tool domains</span></p>
         <h1 className="section-title">Browse by Category</h1>
         <p className="muted-13 mt-1.5 max-w-2xl leading-relaxed">
-          Six focused collections covering calculations, text, developer utilities, color and design, image editing, and finance.
+          Five focused collections covering calculations, business and finance, text and documents, developer and web utilities, and image and design work.
         </p>
       </div>
 

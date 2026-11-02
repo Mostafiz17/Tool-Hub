@@ -1,4 +1,4 @@
-import { EXPANDED_CATEGORIES, EXPANDED_TOOLS } from "./expanded-registry";
+import { EXPANDED_TOOLS } from "./expanded-registry";
 
 export type Category = { slug: string; name: string; description: string; icon: string };
 export type ToolDef = {
@@ -7,14 +7,29 @@ export type ToolDef = {
 };
 
 export const CATEGORIES: Category[] = [
-  { slug: "calculators", name: "Calculators & Dates", description: "Everyday math, percentages, units, ages, dates and countdowns.", icon: "Calculator" },
-  { slug: "text", name: "Text Tools", description: "Count, convert, clean, generate and compare text with live results.", icon: "Type" },
-  { slug: "developer", name: "Developer Tools", description: "JSON, Base64, UUIDs, URLs, regex, colors and secure passwords.", icon: "Code2" },
-  { slug: "design", name: "Color & Design", description: "Pick colors, build palettes and pair fonts that actually work together.", icon: "Palette" },
-  { slug: "image", name: "Image Tools", description: "Compress, resize, convert, heal small marks, and combine images — processed locally in your browser.", icon: "Image" },
-  { slug: "finance", name: "Finance & Utility", description: "Tips, EMIs, live currency conversion and QR codes.", icon: "Wallet" },
-  ...EXPANDED_CATEGORIES,
+  { slug: "calculators", name: "Calculators", description: "Everyday math, percentages, measurements, dates, time zones and countdowns.", icon: "Calculator" },
+  { slug: "business", name: "Business & Finance", description: "Money, pricing, ROI, SaaS metrics, project costs and business planning.", icon: "ChartNoAxesCombined" },
+  { slug: "text", name: "Text & Documents", description: "Write, clean, compare, summarize and create text, PDFs and business documents.", icon: "Files" },
+  { slug: "developer", name: "Developer & Web", description: "Code utilities, security helpers, QR tools, metadata, SEO and website visibility.", icon: "Code2" },
+  { slug: "image", name: "Image & Design", description: "Edit and convert images, work with colors, build palettes, pair fonts and create graphics.", icon: "Image" },
 ];
+
+/** Retired category URLs remain valid and resolve to their merged category. */
+export const CATEGORY_ALIASES: Record<string, string> = {
+  finance: "business",
+  design: "image",
+  "ai-content": "text",
+  seo: "developer",
+  documents: "text",
+};
+
+const CATEGORY_SEARCH_TERMS: Record<string, string[]> = {
+  calculators: ["calculator", "math", "date", "time", "converter"],
+  business: ["business", "finance", "money", "utility", "roi", "saas"],
+  text: ["text", "writing", "content", "ai content", "document", "pdf"],
+  developer: ["developer", "web", "seo", "search", "code", "qr"],
+  image: ["image", "design", "color", "graphics", "photo"],
+};
 
 const t = (id: string, name: string, slug: string, description: string, category: string, icon: string, keywords: string[], opts: Partial<ToolDef> = {}): ToolDef =>
   ({ id, name, slug, description, category, icon, keywords, status: "published", ...opts });
@@ -36,33 +51,42 @@ export const TOOLS: ToolDef[] = [
   t("uuid-generator", "UUID Generator", "uuid-generator", "Cryptographically secure UUID v4 values — generate one or a batch and copy.", "developer", "Fingerprint", ["guid", "uuid", "v4", "random id"], { popular: true }),
   t("url-encoder", "URL Encoder / Decoder", "url-encoder", "Encode and decode URL components safely with validation.", "developer", "Link", ["uri", "percent encoding", "decode"]),
   t("regex-tester", "Regex Tester", "regex-tester", "Test patterns with flags, live match highlighting and match details.", "developer", "Regex", ["regular expression", "match", "pattern"], { featured: true }),
-  t("color-converter", "Color Format Converter", "color-converter", "Convert between HEX, RGB and HSL with validation and live preview.", "developer", "SwatchBook", ["hex", "rgb", "hsl", "convert color"]),
+  t("color-converter", "Color Format Converter", "color-converter", "Convert between HEX, RGB and HSL with validation and live preview.", "image", "SwatchBook", ["hex", "rgb", "hsl", "convert color"]),
   t("password-generator", "Password Generator", "password-generator", "Strong passwords via Web Crypto — length, character sets, ambiguous-character exclusion.", "developer", "KeyRound", ["password", "secure", "random"], { popular: true, featured: true }),
   t("password-strength", "Password Strength Estimator", "password-strength", "Entropy-based strength estimate with honest explanations. Never sent anywhere.", "developer", "ShieldCheck", ["strength", "entropy", "zxcvbn"]),
-  t("color-picker", "Color Picker", "color-picker", "Pick any color and get HEX, RGB and HSL values with one-click copy.", "design", "Pipette", ["pick", "eyedropper", "hex"]),
-  t("palette-generator", "Color Palette Generator", "palette-generator", "Complementary, analogous, triadic and monochromatic palettes from any base color.", "design", "Palette", ["palette", "scheme", "harmony"], { featured: true }),
-  t("font-pairing", "Font Pairing Helper", "font-pairing", "Proven heading/body font pairings with live previews and copyable CSS.", "design", "Type", ["fonts", "typography", "pairing"]),
+  t("color-picker", "Color Picker", "color-picker", "Pick any color and get HEX, RGB and HSL values with one-click copy.", "image", "Pipette", ["pick", "eyedropper", "hex"]),
+  t("palette-generator", "Color Palette Generator", "palette-generator", "Complementary, analogous, triadic and monochromatic palettes from any base color.", "image", "Palette", ["palette", "scheme", "harmony"], { featured: true }),
+  t("font-pairing", "Font Pairing Helper", "font-pairing", "Proven heading/body font pairings with live previews and copyable CSS.", "image", "Type", ["fonts", "typography", "pairing"]),
   t("image-compressor", "Image Compressor", "image-compressor", "Compress JPG/PNG/WebP locally, compare sizes and download — nothing is uploaded.", "image", "FileImage", ["compress", "shrink", "optimize", "jpg"], { popular: true, featured: true }),
   t("image-resizer", "Image Resizer", "image-resizer", "Resize images by pixels or percentage, with optional aspect-ratio lock.", "image", "Scaling", ["resize", "dimensions", "pixels"]),
   t("image-converter", "Image Format Converter", "image-converter", "Convert between PNG, JPEG and WebP with transparency handled correctly.", "image", "Repeat", ["convert", "png", "webp", "jpeg"]),
   t("images-to-pdf", "Images to PDF", "images-to-pdf", "Combine multiple images into one real PDF — reorder, preview and download.", "image", "FileDown", ["pdf", "combine", "jpg to pdf"], { featured: true }),
   t("watermark-remover", "Watermark Remover", "watermark-remover", "Paint over a small mark and locally heal it from nearby pixels. Best on simple backgrounds; results vary.", "image", "Eraser", ["remove watermark", "heal image", "object remover", "retouch", "repair photo"], { featured: true }),
-  t("tip-calculator", "Tip Calculator", "tip-calculator", "Tip amount, total bill and per-person split in one glance.", "finance", "Receipt", ["tip", "bill", "split", "restaurant"], { popular: true }),
-  t("emi-calculator", "EMI Calculator", "emi-calculator", "Monthly installment, total interest and repayment from principal, rate and tenure.", "finance", "Landmark", ["loan", "emi", "interest", "mortgage"], { popular: true }),
-  t("currency-converter", "Currency Converter", "currency-converter", "Live exchange rates from a real public source, with source and update time shown.", "finance", "ArrowLeftRight", ["currency", "exchange", "usd", "eur", "fx"], { featured: true }),
-  t("qr-generator", "QR Code Generator", "qr-generator", "Generate real QR codes from text or URLs and download as PNG.", "finance", "QrCode", ["qr", "code", "scan"], { popular: true }),
+  t("tip-calculator", "Tip Calculator", "tip-calculator", "Tip amount, total bill and per-person split in one glance.", "business", "Receipt", ["tip", "bill", "split", "restaurant"], { popular: true }),
+  t("emi-calculator", "EMI Calculator", "emi-calculator", "Monthly installment, total interest and repayment from principal, rate and tenure.", "business", "Landmark", ["loan", "emi", "interest", "mortgage"], { popular: true }),
+  t("currency-converter", "Currency Converter", "currency-converter", "Live exchange rates from a real public source, with source and update time shown.", "business", "ArrowLeftRight", ["currency", "exchange", "usd", "eur", "fx"], { featured: true }),
+  t("qr-generator", "QR Code Generator", "qr-generator", "Generate real QR codes from text or URLs and download as PNG.", "developer", "QrCode", ["qr", "code", "scan"], { popular: true }),
   ...EXPANDED_TOOLS,
 ];
 
 export const publishedTools = TOOLS.filter((x) => x.status === "published");
 export const getTool = (slug: string) => publishedTools.find((x) => x.slug === slug);
-export const getCategory = (slug: string) => CATEGORIES.find((x) => x.slug === slug);
-export const toolsByCategory = (slug: string) => publishedTools.filter((x) => x.category === slug);
+export const resolveCategorySlug = (slug: string) => CATEGORY_ALIASES[slug] ?? slug;
+export const getCategory = (slug: string) => CATEGORIES.find((x) => x.slug === resolveCategorySlug(slug));
+export const toolsByCategory = (slug: string) => publishedTools.filter((x) => x.category === resolveCategorySlug(slug));
 export function searchTools(q: string): ToolDef[] {
   const s = q.trim().toLowerCase();
   if (!s) return publishedTools;
-  return publishedTools.filter((x) =>
-    [x.name, x.description, x.category, ...x.keywords].join(" ").toLowerCase().includes(s) ||
-    s.split(/\s+/).every((w) => [x.name, x.description, ...x.keywords].join(" ").toLowerCase().includes(w))
-  );
+  return publishedTools.filter((x) => {
+    const category = getCategory(x.category);
+    const haystack = [
+      x.name,
+      x.description,
+      x.category,
+      category?.name ?? "",
+      ...(CATEGORY_SEARCH_TERMS[x.category] ?? []),
+      ...x.keywords,
+    ].join(" ").toLowerCase();
+    return haystack.includes(s) || s.split(/\s+/).every((word) => haystack.includes(word));
+  });
 }

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { ChevronRight, ArrowLeft } from "lucide-react";
-import { CATEGORIES, getCategory, publishedTools, toolsByCategory } from "@/lib/registry";
+import { CATEGORY_ALIASES, CATEGORIES, getCategory, publishedTools, resolveCategorySlug, toolsByCategory } from "@/lib/registry";
 import { ToolCard, ToolIcon } from "@/components/ui";
 
 export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ slug: c.slug }));
+  return [...CATEGORIES.map((c) => c.slug), ...Object.keys(CATEGORY_ALIASES)].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -17,6 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const canonicalSlug = resolveCategorySlug(slug);
+  if (canonicalSlug !== slug) redirect(`/categories/${canonicalSlug}`);
+
   const cat = getCategory(slug);
   if (!cat) notFound();
 
